@@ -112,6 +112,3 @@ local.properties
 .gradle/
 .idea/
 .mvn/
-gradle/
-gradlew
-gradlew.bat

@@ -21,11 +21,6 @@ subprojects {
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
-
-    repositories {
-        maven { url = 'http://nexus.infra.moobie.com.br/content/groups/public/' }
-        maven { url = 'http://nexus.infra.moobie.com.br/content/repositories/moobie/' }
-    }
 }
 
 task wrapper(type: Wrapper) {

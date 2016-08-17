@@ -12,7 +12,7 @@ cache:
 before_install:
   - pwd
   - ls -lah
- - chmod +x gradlew
+  - chmod +x gradlew
 
 script:
   - ./gradlew clean build

@@ -1,0 +1,5 @@
+rootProject.name = 'eventasia'
+
+include ':kafka'
+include ':framework'
+include ':event-store'

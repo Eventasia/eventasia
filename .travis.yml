@@ -9,5 +9,10 @@ cache:
   directories:
   - $HOME/.gradle
 
+before_install:
+ - chmod +x gradlew
+
 script:
+  - pwd
+  - ls -lah
   - ./gradlew clean build

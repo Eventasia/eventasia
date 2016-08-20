@@ -6,8 +6,6 @@ import java.util.UUID;
 
 public interface AggregateRepository<A extends Aggregate> {
 
-    public void save(A aggregate);
-
-    public A get(UUID uuid);
+    A get(UUID uuid);
 
 }

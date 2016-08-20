@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Component
 @ConditionalOnMissingBean
-public class InMemoryAggregateRepositoryImpl<A extends Aggregate> implements AggregateRepository<A> {
+public class InMemoryAggregateRepositoryImpl<A extends Aggregate> implements ReadWriteAggregateRepository<A> {
 
     private Map<UUID, A> aggregateMap = new HashMap<>();
 

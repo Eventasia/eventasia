@@ -1,3 +1,6 @@
+group 'com.github.eventasia'
+version = "1.0.0-SNAPSHOT"
+
 buildscript {
     ext {
         springBootVersion = '1.4.0.RELEASE'
@@ -18,13 +21,35 @@ subprojects {
     apply plugin: 'idea'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'jacoco'
+    apply plugin: 'maven-publish'
+
+    group = rootProject.group
+    version = rootProject.version
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
     repositories {
+        mavenLocal()
         mavenCentral()
     }
+
+    plugins.withType(JavaPlugin) {
+        jar{
+            version = project.version
+        }
+    }
+
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+    }
+    tasks['publish'].dependsOn tasks['publishToMavenLocal']
+    tasks['build'].dependsOn tasks['publish']
 }
 
 task wrapper(type: Wrapper) {

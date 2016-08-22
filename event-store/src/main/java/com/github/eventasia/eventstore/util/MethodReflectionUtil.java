@@ -9,7 +9,7 @@ public final class MethodReflectionUtil {
     /**
      * If you have a method like:
      * <p>
-     * public List<Event> eventList() {...}
+     * public List&lt;Event&gt; eventList() {...}
      * <p>
      * And you need to, via Reflection, discover dinamically what's the type the List are holding.
      *

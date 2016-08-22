@@ -21,10 +21,13 @@ subprojects {
     apply plugin: 'idea'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'jacoco'
+    apply plugin: 'maven'
     apply plugin: 'maven-publish'
-
+    apply plugin: 'signing'
     group = rootProject.group
     version = rootProject.version
+
+    ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
@@ -38,6 +41,70 @@ subprojects {
         jar{
             version = project.version
         }
+        task javadocJar(type: Jar, dependsOn: javadoc) {
+            classifier = 'javadoc'
+            from 'build/docs/javadoc'
+        }
+
+        task sourcesJar(type: Jar) {
+            from sourceSets.main.allSource
+            classifier = 'sources'
+        }
+
+        artifacts {
+            archives jar
+            archives javadocJar
+            archives sourcesJar
+        }
+        signing {
+            required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
+            sign configurations.archives
+        }
+
+        uploadArchives {
+            repositories {
+                mavenDeployer {
+                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                        authentication(userName: System.getenv("USERNAME"), password: System.getenv("PASSWORD"))
+                    }
+
+                    pom.project {
+                        name "Eventasia"
+                        packaging "jar"
+                        description "Eventasia is a Event Sourcing Framework for use with Spring Boot"
+                        url "https://github.com/Eventasia/eventasia"
+
+                        scm {
+                            url "scm:git@github.com:Eventasia/eventasia.git"
+                            connection "scm:git@github.com:Eventasia/eventasia.git"
+                            developerConnection "scm:git@github.com:Eventasia/eventasia.git"
+                        }
+
+                        licenses {
+                            license {
+                                name "The Apache Software License, Version 2.0"
+                                url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                                distribution "repo"
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id "caioquirino"
+                                name "Caio Quirino da Silva"
+                            }
+                            developer {
+                                id "fesposito"
+                                name "Fábio Espósito"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
 
@@ -48,10 +115,10 @@ subprojects {
             }
         }
     }
-    tasks['publish'].dependsOn tasks['publishToMavenLocal']
-    tasks['build'].dependsOn tasks['publish']
+    tasks["publish"].dependsOn tasks["publishToMavenLocal"]
+    tasks["build"].dependsOn tasks["publish"]
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.14.1'
+    gradleVersion = "2.14.1"
 }

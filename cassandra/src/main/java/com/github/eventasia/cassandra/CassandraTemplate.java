@@ -34,10 +34,10 @@ public class CassandraTemplate {
                 .build();
         Metadata metadata = cluster.getMetadata();
 
-        log.info("Connected to cluster: " + metadata.getClusterName());
+        log.info("Connected; cluster=" + metadata.getClusterName());
 
         for (Host host : metadata.getAllHosts()) {
-            log.info("Datacenter: " + host.getDatacenter() + " Host: " + host.getDatacenter() + "Rack: "+ host.getRack());
+            log.info("Datacenter=" + host.getDatacenter() + "; Host=" + host.getDatacenter() + "; Rack="+ host.getRack());
         }
 
         session = cluster.connect(getKeyspace());

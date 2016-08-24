@@ -5,18 +5,21 @@ import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
 import com.github.eventasia.cassandra.CassandraTemplate;
 import com.github.eventasia.framework.Aggregate;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Component
-public class CassandraRepositoryImpl implements ReadWriteAggregateRepository<Aggregate> {
+public class CassandraRepositoryImpl<A extends Aggregate> implements ReadWriteAggregateRepository<A> {
 
     @Autowired
     CassandraTemplate cassandraTemplate;
 
     MappingManager manager;
+
     Mapper<Aggregate> mapper;
 
     public CassandraRepositoryImpl(){
@@ -25,13 +28,13 @@ public class CassandraRepositoryImpl implements ReadWriteAggregateRepository<Agg
     }
 
     @Override
-    public Aggregate get(UUID uuid) {
+    public A get(UUID uuid) {
 
-        return mapper.get(uuid);
+        return (A)mapper.get(uuid);
     }
 
     @Override
-    public void save(Aggregate aggregate) {
+    public void save(A aggregate) {
         mapper.save(aggregate);
     }
 }

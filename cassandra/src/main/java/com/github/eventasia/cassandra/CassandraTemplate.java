@@ -4,11 +4,15 @@ import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Host;
 import com.datastax.driver.core.Metadata;
 import com.datastax.driver.core.Session;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CassandraTemplate {
+
+    private Log log = LogFactory.getLog(this.getClass());
 
     @Value("${spring.data.cassandra.contact.points}")
     private String contactPoints;
@@ -29,11 +33,11 @@ public class CassandraTemplate {
                 .withPort(getPort())
                 .build();
         Metadata metadata = cluster.getMetadata();
-        System.out.printf("Connected to cluster: %s\n",
-                metadata.getClusterName());
+
+        log.info("Connected to cluster: " + metadata.getClusterName());
+
         for (Host host : metadata.getAllHosts()) {
-            System.out.printf("Datacenter: %s; Host: %s; Rack: %s\n",
-                    host.getDatacenter(), host.getAddress(), host.getRack());
+            log.info("Datacenter: " + host.getDatacenter() + " Host: " + host.getDatacenter() + "Rack: "+ host.getRack());
         }
 
         session = cluster.connect(getKeyspace());

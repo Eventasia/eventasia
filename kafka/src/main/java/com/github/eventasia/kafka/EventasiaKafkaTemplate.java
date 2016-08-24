@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutionException;
 // TODO in progress
 
 @Component
-public class KafkaTemplate {
+public class EventasiaKafkaTemplate {
 
     private Log log = LogFactory.getLog(this.getClass());
 
@@ -39,7 +39,7 @@ public class KafkaTemplate {
     private Consumer<String, String> consumer;
 
 
-    public KafkaTemplate(){
+    public EventasiaKafkaTemplate(){
         config();
 
     }

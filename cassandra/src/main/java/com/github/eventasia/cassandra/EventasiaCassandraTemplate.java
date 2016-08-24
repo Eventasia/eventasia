@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CassandraTemplate {
+public class EventasiaCassandraTemplate {
 
     private Log log = LogFactory.getLog(this.getClass());
 

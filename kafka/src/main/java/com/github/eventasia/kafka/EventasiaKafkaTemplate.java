@@ -39,11 +39,12 @@ public class EventasiaKafkaTemplate {
 
     private Consumer<String, String> consumer;
 
-    @PostConstruct
+
     public EventasiaKafkaTemplate(){
 
     }
 
+    @PostConstruct
     private void config(){
         kafkaProps.put("bootstrap.servers", getBrokerList());
         kafkaProps.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");

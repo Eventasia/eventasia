@@ -13,6 +13,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
@@ -38,9 +39,8 @@ public class EventasiaKafkaTemplate {
 
     private Consumer<String, String> consumer;
 
-
+    @PostConstruct
     public EventasiaKafkaTemplate(){
-        config();
 
     }
 

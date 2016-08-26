@@ -1,4 +1,4 @@
-package com.github.eventasia.kafka;
+package com.github.eventasia.stream.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;

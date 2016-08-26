@@ -16,6 +16,10 @@ buildscript {
 }
 
 subprojects {
+    if (project.name == 'store' || project.name == 'stream') {
+        return
+    }
+
     apply plugin: 'java'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
@@ -60,6 +64,8 @@ subprojects {
             required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
             sign configurations.archives
         }
+
+
 
         uploadArchives {
             repositories {

@@ -1,4 +1,4 @@
-package com.github.eventasia.kafka;
+package com.github.eventasia.stream.kafka;
 
 
 import org.apache.commons.logging.Log;

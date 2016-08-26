@@ -1,4 +1,4 @@
-package com.github.eventasia.kafka;
+package com.github.eventasia.stream.kafka;
 
 import org.junit.Ignore;
 import org.junit.Test;

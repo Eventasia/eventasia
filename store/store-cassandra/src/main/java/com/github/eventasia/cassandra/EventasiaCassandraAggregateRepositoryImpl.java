@@ -1,6 +1,6 @@
-package com.github.eventasia.eventstore.repository;
+package com.github.eventasia.cassandra;
 
-import com.github.eventasia.cassandra.CassandraConfig;
+import com.github.eventasia.eventstore.repository.ReadWriteAggregateRepository;
 import com.github.eventasia.framework.Aggregate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

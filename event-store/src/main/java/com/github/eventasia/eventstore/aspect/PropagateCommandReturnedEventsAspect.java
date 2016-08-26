@@ -2,7 +2,6 @@ package com.github.eventasia.eventstore.aspect;
 
 import com.github.eventasia.eventstore.HandlerSignatureException;
 import com.github.eventasia.eventstore.command.AggregateCommandHandler;
-import com.github.eventasia.eventstore.stream.EventStream;
 import com.github.eventasia.eventstore.util.MethodReflectionUtil;
 import com.github.eventasia.framework.Event;
 import org.apache.commons.logging.Log;
@@ -23,8 +22,6 @@ public class PropagateCommandReturnedEventsAspect {
 
     private static final Class<?> ALLOWED_RETURN_TYPE = Event.class;
     private final ApplicationEventPublisher publisher;
-    @Autowired
-    EventStream eventStream;
     private Log log = LogFactory.getLog(PropagateCommandReturnedEventsAspect.class);
 
     @Autowired
@@ -80,7 +77,6 @@ public class PropagateCommandReturnedEventsAspect {
 
     private void publish(Event event) {
         log.debug("m=publish, event='" + event + "'");
-        eventStream.postEvent(event);
         publisher.publishEvent(event);
     }
 

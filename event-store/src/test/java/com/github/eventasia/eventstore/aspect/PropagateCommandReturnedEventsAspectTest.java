@@ -2,7 +2,6 @@ package com.github.eventasia.eventstore.aspect;
 
 import com.github.eventasia.eventstore.AggregateService;
 import com.github.eventasia.eventstore.command.FirstCustomCommand;
-import com.github.eventasia.eventstore.stream.ObservableEventStreamImpl;
 import com.github.eventasia.eventstore.wrapper.TestEventListenerWrapper;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -21,8 +20,7 @@ import java.util.concurrent.CountDownLatch;
         PropagateCommandReturnedEventsAspectTest.class,
         AggregateService.class,
         PropagateCommandReturnedEventsAspect.class,
-        TestEventListenerWrapper.class,
-        ObservableEventStreamImpl.class})
+        TestEventListenerWrapper.class})
 
 @Configuration
 @EnableAspectJAutoProxy

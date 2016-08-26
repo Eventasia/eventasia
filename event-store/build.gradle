@@ -7,7 +7,6 @@ bootRepackage {
 dependencies {
 
     compile project(":framework")
-    compile project(":cassandra")
 
     compile("org.springframework.boot:spring-boot-starter")
     compile('org.springframework.kafka:spring-kafka:1.0.2.RELEASE')

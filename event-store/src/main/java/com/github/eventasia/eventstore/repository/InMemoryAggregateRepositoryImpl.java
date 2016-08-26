@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
-@ConditionalOnMissingBean
+@ConditionalOnMissingBean(AggregateRepository.class)
 public class InMemoryAggregateRepositoryImpl<A extends Aggregate> implements ReadWriteAggregateRepository<A> {
 
     private Map<UUID, A> aggregateMap = new HashMap<>();

@@ -1,5 +1,5 @@
 group 'com.github.eventasia'
-version = "1.0.0-SNAPSHOT"
+version = "0.0.2.SNAPSHOT"
 
 buildscript {
     ext {
@@ -12,8 +12,11 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath('io.spring.gradle:dependency-management-plugin:0.5.4.RELEASE')
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
     }
 }
+
+apply plugin: 'io.codearte.nexus-staging'
 
 subprojects {
     if (project.name == 'store' || project.name == 'stream') {
@@ -25,9 +28,10 @@ subprojects {
     apply plugin: 'idea'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'jacoco'
+
     apply plugin: 'maven'
-    apply plugin: 'maven-publish'
     apply plugin: 'signing'
+
     group = rootProject.group
     version = rootProject.version
 
@@ -65,15 +69,24 @@ subprojects {
             sign configurations.archives
         }
 
+        //https://github.com/Codearte/gradle-nexus-staging-plugin/
+        nexusStaging {
+            username = ossrhUsername
+            password = ossrhPassword
+        }
 
-
+        //http:\/\/central.sonatype.org\/pages\/ossrh-guide.html#SonatypeOSSMavenRepositoryUsageGuide-8c.AutomatingReleasesinNexus2.4
         uploadArchives {
             repositories {
                 mavenDeployer {
                     beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
                     repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                        authentication(userName: System.getenv("USERNAME"), password: System.getenv("PASSWORD"))
+                        authentication(userName: ossrhUsername, password: ossrhPassword)
+                    }
+
+                    snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                        authentication(userName: ossrhUsername, password: ossrhPassword)
                     }
 
                     pom.project {
@@ -113,16 +126,16 @@ subprojects {
 
     }
 
-
-    publishing {
+    /*publishing {
         publications {
             mavenJava(MavenPublication) {
                 from components.java
             }
         }
     }
+
     tasks["publish"].dependsOn tasks["publishToMavenLocal"]
-    tasks["build"].dependsOn tasks["publish"]
+    tasks["build"].dependsOn tasks["publish"]*/
 }
 
 task wrapper(type: Wrapper) {

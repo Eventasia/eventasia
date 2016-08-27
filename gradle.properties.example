@@ -1,0 +1,9 @@
+#Signing config
+signing.password=fillme
+signing.secretKeyRingFile=fillme.gpg
+signing.keyId=FDFD33EC
+signing.keyPassword=fillme
+
+#OSSRH Nexus config
+ossrhUsername=fillme
+ossrhPassword=fillme

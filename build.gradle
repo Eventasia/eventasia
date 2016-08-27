@@ -1,6 +1,33 @@
 group 'com.github.eventasia'
 version = "0.0.2.SNAPSHOT"
 
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+def ossrhUsername = project.properties['ossrhUsername'];
+def ossrhPassword = project.properties['ossrhPassword'];
+def signingPassword = project.properties['signingPassword'];
+def signingKeyId = project.properties['signingKeyId'];
+def signingKeyPassword = project.properties['signingKeyPassword'];
+
+if (System.getenv("OSSRH_USERNAME") != null) {
+    ossrhUsername = System.getenv("OSSRH_USERNAME");
+}
+if (System.getenv("OSSRH_PASSWORD") != null) {
+    ossrhPassword = System.getenv("OSSRH_PASSWORD");
+}
+if (System.getenv("SIGNING_PASSWORD") != null) {
+    signingPassword = System.getenv("SIGNING_PASSWORD");
+}
+if (System.getenv("SIGNING_KEY_ID") != null) {
+    signingKeyId = System.getenv("SIGNING_KEY_ID");
+}
+if (System.getenv("SIGNING_KEY_PASSWORD") != null) {
+    signingKeyPassword = System.getenv("SIGNING_KEY_PASSWORD");
+}
+
+
+
+
 buildscript {
     ext {
         springBootVersion = '1.4.0.RELEASE'
@@ -35,8 +62,6 @@ subprojects {
     group = rootProject.group
     version = rootProject.version
 
-    ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
@@ -64,9 +89,12 @@ subprojects {
             archives javadocJar
             archives sourcesJar
         }
+
         signing {
             required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
-            sign configurations.archives
+            if (isReleaseVersion) {
+                sign configurations.archives
+            }
         }
 
         //https://github.com/Codearte/gradle-nexus-staging-plugin/
@@ -79,7 +107,9 @@ subprojects {
         uploadArchives {
             repositories {
                 mavenDeployer {
-                    beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                    if (isReleaseVersion) {
+                        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                    }
 
                     repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
                         authentication(userName: ossrhUsername, password: ossrhPassword)
@@ -124,6 +154,22 @@ subprojects {
             }
         }
 
+    }
+
+    gradle.taskGraph.whenReady { taskGraph ->
+        if (taskGraph.allTasks.any { it instanceof Sign }) {
+            Console console = System.console()
+
+            //Make secretKeyRingFile relative to the rootProject
+            def secretKeyRingFile = new File("${project(':').projectDir}/${ext."signing.secretKeyRingFile"}")
+            allprojects {
+                ext."signing.secretKeyRingFile" = secretKeyRingFile
+                ext."signing.keyId" = signingKeyId
+                ext."signing.keyPassword" = signingKeyPassword
+                ext."signing.password" = signingPassword
+            }
+
+        }
     }
 
     /*publishing {

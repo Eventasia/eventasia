@@ -1,4 +1,4 @@
-package com.github.eventasia.eventstore;
+package com.github.eventasia.eventstore.aspect;
 
 import org.aspectj.lang.Signature;
 

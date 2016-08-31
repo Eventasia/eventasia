@@ -1,5 +1,5 @@
 group 'com.github.eventasia'
-version = "0.0.2.RELEASE"
+version = "0.0.3.SNAPSHOT"
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
@@ -171,8 +171,8 @@ subprojects {
 
         }
     }
-
-    /*publishing {
+    apply plugin: 'maven-publish'
+    publishing {
         publications {
             mavenJava(MavenPublication) {
                 from components.java
@@ -181,7 +181,7 @@ subprojects {
     }
 
     tasks["publish"].dependsOn tasks["publishToMavenLocal"]
-    tasks["build"].dependsOn tasks["publish"]*/
+    tasks["build"].dependsOn tasks["publish"]
 }
 
 task wrapper(type: Wrapper) {

@@ -2,6 +2,7 @@ package com.github.eventasia.eventstore;
 
 import com.github.eventasia.eventstore.command.ChildCustomCommand;
 import com.github.eventasia.eventstore.command.FirstCustomCommand;
+import com.github.eventasia.eventstore.service.AggregateService;
 import com.github.eventasia.eventstore.wrapper.TestEventListenerWrapper;
 import org.junit.Assert;
 import org.junit.Test;

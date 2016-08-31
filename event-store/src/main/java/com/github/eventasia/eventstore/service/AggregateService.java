@@ -1,4 +1,4 @@
-package com.github.eventasia.eventstore;
+package com.github.eventasia.eventstore.service;
 
 import com.github.eventasia.framework.Aggregate;
 import com.github.eventasia.framework.command.Command;

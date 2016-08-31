@@ -16,12 +16,12 @@ public class EventasiaCassandraAggregateRepositoryImpl<A extends Aggregate> impl
     @Override
     public A get(UUID uuid) {
 
-        return (A) cassandraConfig.getManager().mapper(Aggregate.class).get();
+        return (A) cassandraConfig.getManager().mapper(Aggregate.class).get(uuid);
     }
 
     @Override
     public void save(A aggregate) {
-
+        aggregate.incrementVersion();
         cassandraConfig.getManager().mapper(Aggregate.class).save(aggregate);
     }
 }

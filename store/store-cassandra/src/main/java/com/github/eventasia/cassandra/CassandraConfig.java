@@ -6,6 +6,8 @@ import com.datastax.driver.core.Metadata;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,11 +15,11 @@ import javax.annotation.PostConstruct;
 
 
 @Configuration
-public class EventasiaCassandraConfig {
+public class CassandraConfig {
 
-    MappingManager manager;
+    private MappingManager manager;
 
-    Mapper mapper;
+    private Mapper mapper;
 
     @Value("${eventasia.cassandra.contact-points}")
     private String contactPoints;
@@ -32,6 +34,9 @@ public class EventasiaCassandraConfig {
 
     private Session session;
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+
     @PostConstruct
     public void connect() {
         cluster = Cluster.builder()
@@ -39,11 +44,9 @@ public class EventasiaCassandraConfig {
                 .withPort(getPort())
                 .build();
         Metadata metadata = cluster.getMetadata();
-        System.out.printf("Connected to cluster: %s\n",
-                metadata.getClusterName());
+        log.info("Connected to cluster: "+ metadata.getClusterName());
         for (Host host : metadata.getAllHosts()) {
-            System.out.printf("Datacenter: %s; Host: %s; Rack: %s\n",
-                    host.getDatacenter(), host.getAddress(), host.getRack());
+            log.info("Datacenter: "+host.getDatacenter()+" Host: "+host.getAddress()+ " Rack: " + host.getRack());
         }
 
         session = cluster.connect(getKeyspace());

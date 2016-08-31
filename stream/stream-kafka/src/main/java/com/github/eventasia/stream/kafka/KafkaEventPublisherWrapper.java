@@ -11,16 +11,16 @@ import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
 @Component
-public class KafkaWrapper implements EventPublisher{
+public class KafkaEventPublisherWrapper implements EventPublisher{
 
-    private Log log = LogFactory.getLog(KafkaWrapper.class);
+    private Log log = LogFactory.getLog(KafkaEventPublisherWrapper.class);
 
     @Autowired
     private KafkaTemplate<Integer, String> kafkaTemplate;
 
     private final ApplicationEventPublisher publisher;
 
-    public KafkaWrapper(ApplicationEventPublisher publisher){
+    public KafkaEventPublisherWrapper(ApplicationEventPublisher publisher){
         this.publisher = publisher;
     }
 

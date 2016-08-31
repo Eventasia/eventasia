@@ -10,22 +10,22 @@ import java.util.UUID;
 @Component
 public class EventasiaCassandraAggregateRepositoryImpl<A extends Aggregate> implements ReadWriteAggregateRepository<A> {
 
-    private final EventasiaCassandraConfig eventasiaCassandraConfig;
+    private final CassandraConfig cassandraConfig;
 
     @Autowired
-    public EventasiaCassandraAggregateRepositoryImpl(EventasiaCassandraConfig eventasiaCassandraConfig){
-        this.eventasiaCassandraConfig = eventasiaCassandraConfig;
+    public EventasiaCassandraAggregateRepositoryImpl(CassandraConfig cassandraConfig){
+        this.cassandraConfig = cassandraConfig;
     }
 
     @Override
     public A get(UUID uuid) {
 
-        return (A) eventasiaCassandraConfig.getManager().mapper(Aggregate.class).get(uuid);
+        return (A) cassandraConfig.getManager().mapper(Aggregate.class).get(uuid);
     }
 
     @Override
     public void save(A aggregate) {
         aggregate.incrementVersion();
-        eventasiaCassandraConfig.getManager().mapper(Aggregate.class).save(aggregate);
+        cassandraConfig.getManager().mapper(Aggregate.class).save(aggregate);
     }
 }

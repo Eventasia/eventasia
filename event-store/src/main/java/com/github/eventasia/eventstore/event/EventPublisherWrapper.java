@@ -3,12 +3,14 @@ package com.github.eventasia.eventstore.event;
 import com.github.eventasia.framework.Event;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EventPublisherWrapper {
+@ConditionalOnMissingBean(EventPublisher.class)
+public class EventPublisherWrapper implements EventPublisher{
 
     private Log log = LogFactory.getLog(EventPublisherWrapper.class);
 

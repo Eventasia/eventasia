@@ -74,7 +74,7 @@ public class KafkaConfig {
     }
 
     @Bean
-    public KafkaTemplate<Integer, String> kafkaTemplate() {
+    public KafkaTemplate<Integer, String> kafkaTemplateProducer() {
 
         KafkaTemplate kafkaTemplate = new KafkaTemplate<>(producerFactory());
         kafkaTemplate.setDefaultTopic(getDefaultTopic());

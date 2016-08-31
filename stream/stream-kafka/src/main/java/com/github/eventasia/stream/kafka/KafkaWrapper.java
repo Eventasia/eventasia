@@ -15,4 +15,5 @@ public class KafkaWrapper {
     public void publishEvent(Message<Event> event) {
         kafkaTemplate.send(kafkaTemplate.getDefaultTopic(), event.getPayload().toString());
     }
+
 }

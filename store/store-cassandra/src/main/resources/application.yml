@@ -1,5 +1,0 @@
-eventasia:
-  cassandra:
-    contact-points:
-    keyspace-name:
-    port:

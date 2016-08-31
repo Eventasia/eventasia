@@ -4,18 +4,20 @@ import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Host;
 import com.datastax.driver.core.Metadata;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 
-@Component
-public class CassandraConfig {
 
-    private Log log = LogFactory.getLog(this.getClass());
+@Configuration
+public class EventasiaCassandraConfig {
+
+    MappingManager manager;
+
+    Mapper mapper;
 
     @Value("${eventasia.cassandra.contact-points}")
     private String contactPoints;
@@ -24,38 +26,39 @@ public class CassandraConfig {
     private String keyspace;
 
     @Value("${eventasia.cassandra.port}")
-    private String port;
+    private int port;
 
     private Cluster cluster;
 
     private Session session;
 
-    private MappingManager manager;
-
-//    @PostConstruct
+    @PostConstruct
     public void connect() {
         cluster = Cluster.builder()
                 .addContactPoint(getContactPoints())
-                .withPort(Integer.valueOf(getPort()))
+                .withPort(getPort())
                 .build();
         Metadata metadata = cluster.getMetadata();
-
-        log.info("Connected; cluster=" + metadata.getClusterName());
-
+        System.out.printf("Connected to cluster: %s\n",
+                metadata.getClusterName());
         for (Host host : metadata.getAllHosts()) {
-            log.info("Datacenter=" + host.getDatacenter() + "; Host=" + host.getDatacenter() + "; Rack=" + host.getRack());
+            System.out.printf("Datacenter: %s; Host: %s; Rack: %s\n",
+                    host.getDatacenter(), host.getAddress(), host.getRack());
         }
 
         session = cluster.connect(getKeyspace());
 
+        session.execute("USE "+getKeyspace());
+
         manager = new MappingManager(session);
+
     }
 
     private String getKeyspace() {
         return this.keyspace;
     }
 
-    private String getPort() {
+    private int getPort() {
         return this.port;
     }
 
@@ -76,7 +79,13 @@ public class CassandraConfig {
         return this.session;
     }
 
+    public Mapper getMapper() {
+        return mapper;
+    }
+
     public MappingManager getManager() {
         return manager;
     }
+
 }
+

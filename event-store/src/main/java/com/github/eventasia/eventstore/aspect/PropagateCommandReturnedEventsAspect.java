@@ -1,8 +1,7 @@
 package com.github.eventasia.eventstore.aspect;
 
 import com.github.eventasia.eventstore.command.AggregateCommandHandler;
-import com.github.eventasia.eventstore.event.EventPublisher;
-import com.github.eventasia.eventstore.repository.AggregateRepository;
+import com.github.eventasia.eventstore.event.EventPublisherWrapper;
 import com.github.eventasia.eventstore.util.MethodReflectionUtil;
 import com.github.eventasia.framework.Event;
 import org.apache.commons.logging.Log;
@@ -23,16 +22,12 @@ public class PropagateCommandReturnedEventsAspect {
 
     private static final Class<?> ALLOWED_RETURN_TYPE = Event.class;
 
-    @Autowired
-    private final EventPublisher publisher;
-
-    @Autowired
-    private AggregateRepository aggregateRepository;
+    private final EventPublisherWrapper publisher;
 
     private Log log = LogFactory.getLog(PropagateCommandReturnedEventsAspect.class);
 
     @Autowired
-    public PropagateCommandReturnedEventsAspect(EventPublisher publisher) {
+    public PropagateCommandReturnedEventsAspect(EventPublisherWrapper publisher) {
         this.publisher = publisher;
     }
 
@@ -83,7 +78,7 @@ public class PropagateCommandReturnedEventsAspect {
     }
 
     private void publish(Event event) {
-        log.debug("m=publish, event='" + event + "'");
+        log.info("Propagate m=publish, event='" + event + "'");
         publisher.publishEvent(new GenericMessage<>(event));
     }
 

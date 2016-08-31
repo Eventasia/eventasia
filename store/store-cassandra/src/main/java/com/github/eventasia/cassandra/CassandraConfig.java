@@ -47,7 +47,6 @@ public class CassandraConfig {
         }
 
         session = cluster.connect(getKeyspace());
-        session.execute("CREATE TABLE IF NOT EXISTS booking_aggregate.booking_aggregate (id uuid PRIMARY KEY, version long, data blob); ");
 
         manager = new MappingManager(session);
     }

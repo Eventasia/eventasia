@@ -5,9 +5,10 @@ ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 def ossrhUsername = project.properties['ossrhUsername'];
 def ossrhPassword = project.properties['ossrhPassword'];
-def signingPassword = project.properties['signingPassword'];
-def signingKeyId = project.properties['signingKeyId'];
-def signingKeyPassword = project.properties['signingKeyPassword'];
+
+def signingPassword = project.properties['signing.password'];
+def signingKeyId = project.properties['signing.keyId'];
+def signingKeyPassword = project.properties['signing.keyPassword'];
 
 if (System.getenv("OSSRH_USERNAME") != null) {
     ossrhUsername = System.getenv("OSSRH_USERNAME");
@@ -158,10 +159,12 @@ subprojects {
 
     gradle.taskGraph.whenReady { taskGraph ->
         if (taskGraph.allTasks.any { it instanceof Sign }) {
-            Console console = System.console()
 
             //Make secretKeyRingFile relative to the rootProject
             def secretKeyRingFile = new File("${project(':').projectDir}/${ext."signing.secretKeyRingFile"}")
+            if(!secretKeyRingFile.exists()) {
+              secretKeyRingFile=new File("~/.gnupg/secring.gpg")
+            }
             allprojects {
                 ext."signing.secretKeyRingFile" = secretKeyRingFile
                 ext."signing.keyId" = signingKeyId

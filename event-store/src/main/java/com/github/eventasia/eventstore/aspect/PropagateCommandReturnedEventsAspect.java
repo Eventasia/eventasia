@@ -2,7 +2,7 @@ package com.github.eventasia.eventstore.aspect;
 
 import com.github.eventasia.eventstore.command.AggregateCommandHandler;
 import com.github.eventasia.eventstore.event.EventPublisher;
-import com.github.eventasia.eventstore.event.EventPublisherWrapper;
+import com.github.eventasia.eventstore.event.EventasiaMessage;
 import com.github.eventasia.eventstore.util.MethodReflectionUtil;
 import com.github.eventasia.framework.Event;
 import org.apache.commons.logging.Log;
@@ -12,7 +12,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.support.GenericMessage;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -80,7 +79,7 @@ public class PropagateCommandReturnedEventsAspect {
 
     private void publish(Event event) {
         log.info("Propagate m=publish, event='" + event + "'");
-        publisher.publishEvent(new GenericMessage<>(event));
+        publisher.publishEvent(new EventasiaMessage(event));
     }
 
     private Class getParameterizedType(ProceedingJoinPoint joinPoint) {

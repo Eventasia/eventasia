@@ -1,11 +1,9 @@
 package com.github.eventasia.eventstore.event;
 
-import com.github.eventasia.framework.Event;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,8 +18,8 @@ public class EventPublisherWrapper implements EventPublisher{
         this.publisher = publisher;
     }
 
-    public void publishEvent(Message<Event> event) {
-        log.info("Wrapper m=publish, event='" + event.getPayload().toString() + "'");
-        publisher.publishEvent(event);
+    public void publishEvent(EventasiaMessage eventMessage) {
+        log.info("Wrapper m=publish, event='" + eventMessage.getEvent().toString() + "'");
+        publisher.publishEvent(eventMessage.getEvent());
     }
 }

@@ -20,7 +20,7 @@ import java.util.Map;
 
 @SpringBootApplication
 @EnableKafka
-public class KafkaConfig {
+public class EventasiaKafkaConfig {
 
     @Value("${eventasia.kafka.broker-list}")
     private String brokerList;

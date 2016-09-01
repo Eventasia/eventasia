@@ -17,7 +17,7 @@ import javax.annotation.PostConstruct;
 
 
 @Configuration
-public class CassandraConfig {
+public class EventasiaCassandraConfig {
 
     private MappingManager manager;
 

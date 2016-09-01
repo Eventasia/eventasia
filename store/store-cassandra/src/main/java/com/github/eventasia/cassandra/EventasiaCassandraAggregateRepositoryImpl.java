@@ -10,32 +10,32 @@ import java.util.UUID;
 public class EventasiaCassandraAggregateRepositoryImpl<A extends Aggregate> implements EventasiaCassandraAggregateRepository<A>{
 
     @Autowired
-    private CassandraConfig cassandraConfig;
+    private EventasiaCassandraConfig eventasiaCassandraConfig;
 
     @Override
     public A get(UUID uuid) {
 
-        return (A) cassandraConfig.getMapper().get(uuid);
+        return (A) eventasiaCassandraConfig.getMapper().get(uuid);
     }
 
     @Override
     public void save(A aggregate) {
         aggregate.incrementVersion();
-        cassandraConfig.getMapper().save(aggregate);
+        eventasiaCassandraConfig.getMapper().save(aggregate);
     }
 
     @Override
     public void addMapper(Class<A> c) {
-        cassandraConfig.addMapper(c);
+        eventasiaCassandraConfig.addMapper(c);
     }
 
     @Override
     public void addUDT(Class c) {
-        cassandraConfig.addUDT(c);
+        eventasiaCassandraConfig.addUDT(c);
     }
 
     @Override
     public void addCodec(Class c) {
-        cassandraConfig.addCodec(c);
+        eventasiaCassandraConfig.addCodec(c);
     }
 }

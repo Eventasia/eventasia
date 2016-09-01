@@ -1,8 +1,8 @@
 package com.github.eventasia.stream.kafka;
 
 import com.github.eventasia.eventstore.event.EventPublisher;
+import com.github.eventasia.eventstore.event.EventasiaGsonMessageConverterImpl;
 import com.github.eventasia.eventstore.event.EventasiaMessage;
-import com.github.eventasia.eventstore.event.EventasiaMessageConverter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +16,8 @@ public class KafkaEventPublisherWrapper implements EventPublisher{
 
     private Log log = LogFactory.getLog(KafkaEventPublisherWrapper.class);
 
+    private EventasiaGsonMessageConverterImpl messageConverter = new EventasiaGsonMessageConverterImpl();
+
     @Autowired
     private KafkaTemplate<Integer, String> kafkaTemplate;
 
@@ -27,15 +29,15 @@ public class KafkaEventPublisherWrapper implements EventPublisher{
 
     @Override
     public void publishEvent(EventasiaMessage eventMessage) {
-        log.info("KafkaWrapper m=publish, event='" + eventMessage.getEvent().toString() + "'");
-        kafkaTemplate.send(kafkaTemplate.getDefaultTopic(), EventasiaMessageConverter.serialize(eventMessage));
+        log.info("KafkaWrapper m=publish, event=" + eventMessage.toString() );
+        kafkaTemplate.send(kafkaTemplate.getDefaultTopic(), new String(messageConverter.serialize(eventMessage) ));
     }
 
     @KafkaListener( topics = "booking")
     public void receiveAndPropagateEvent(String eventMessage) {
         log.info("KafkaListener.receive: "+eventMessage);
-        EventasiaMessage eventasiaMessage = EventasiaMessageConverter.deserialize(eventMessage);
-        publisher.publishEvent(eventasiaMessage); // FIXME nao consegue deserializar Event
-        log.debug("KafkaListener.propagate="+ eventasiaMessage.getEvent().toString());
+        EventasiaMessage eventasiaMessage = messageConverter.deserialize(eventMessage.getBytes());
+        publisher.publishEvent(eventasiaMessage);
+        log.debug("KafkaListener.propagate="+ eventasiaMessage);
     }
 }

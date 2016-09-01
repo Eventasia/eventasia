@@ -4,8 +4,10 @@ import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Host;
 import com.datastax.driver.core.Metadata;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.extras.codecs.enums.EnumNameCodec;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
+import com.github.eventasia.framework.Aggregate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,7 +56,6 @@ public class CassandraConfig {
         session.execute("USE "+getKeyspace());
 
         manager = new MappingManager(session);
-
     }
 
     private String getKeyspace() {
@@ -90,5 +91,17 @@ public class CassandraConfig {
         return manager;
     }
 
+    public <A extends Aggregate> void addMapper(Class<A> c) {
+        mapper = this.getManager().mapper(c);
+    }
+
+    public void addUDT(Class c) {
+        manager.udtCodec(c);
+    }
+
+    public void addCodec(Class c) {
+        cluster.getConfiguration().getCodecRegistry()
+                .register(new EnumNameCodec<>(c));
+    }
 }
 

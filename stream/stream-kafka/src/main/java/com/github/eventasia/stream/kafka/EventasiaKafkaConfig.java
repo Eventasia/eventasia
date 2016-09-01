@@ -28,6 +28,9 @@ public class EventasiaKafkaConfig {
     @Value("${eventasia.kafka.topic}")
     private String defaultTopic;
 
+    @Value("${eventasia.kafka.application-group}")
+    private String applicationGroup;
+
     @Bean
     ConcurrentKafkaListenerContainerFactory<Integer, String>
     kafkaListenerContainerFactory() {
@@ -47,6 +50,7 @@ public class EventasiaKafkaConfig {
         //FIXME: 12factorize
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, getBrokerList());
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, getApplicationGroup());
         props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "15000");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
@@ -88,5 +92,9 @@ public class EventasiaKafkaConfig {
 
     public String getDefaultTopic() {
         return defaultTopic;
+    }
+
+    public String getApplicationGroup() {
+        return applicationGroup;
     }
 }

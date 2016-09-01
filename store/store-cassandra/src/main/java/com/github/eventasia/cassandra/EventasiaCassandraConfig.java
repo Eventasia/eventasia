@@ -53,8 +53,6 @@ public class EventasiaCassandraConfig {
 
         session = cluster.connect(getKeyspace());
 
-        session.execute("USE "+getKeyspace());
-
         manager = new MappingManager(session);
     }
 

@@ -12,6 +12,8 @@ public class EventPublisherWrapper implements EventPublisher{
 
     private Log log = LogFactory.getLog(EventPublisherWrapper.class);
 
+    private EventasiaGsonMessageConverterImpl messageConverter = new EventasiaGsonMessageConverterImpl();
+
     private ApplicationEventPublisher publisher;
 
     public EventPublisherWrapper(ApplicationEventPublisher publisher) {
@@ -21,5 +23,11 @@ public class EventPublisherWrapper implements EventPublisher{
     public void publishEvent(EventasiaMessage eventMessage) {
         log.info("Wrapper m=publish, event='" + eventMessage.getEvent().toString() + "'");
         publisher.publishEvent(eventMessage.getEvent());
+    }
+
+    @Override
+    public void receiveAndPropagateEvent(String eventMessage) {
+        EventasiaMessage eventasiaMessage = messageConverter.deserialize(eventMessage.getBytes());
+        publisher.publishEvent(eventasiaMessage.getEvent());
     }
 }

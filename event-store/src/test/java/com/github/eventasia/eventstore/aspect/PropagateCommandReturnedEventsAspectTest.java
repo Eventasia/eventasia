@@ -1,7 +1,7 @@
 package com.github.eventasia.eventstore.aspect;
 
-import com.github.eventasia.eventstore.service.AggregateService;
 import com.github.eventasia.eventstore.command.FirstCustomCommand;
+import com.github.eventasia.eventstore.service.AggregateService;
 import com.github.eventasia.eventstore.wrapper.TestEventListenerWrapper;
 import org.junit.Ignore;
 import org.junit.Test;

@@ -1,6 +1,7 @@
 package com.github.eventasia.eventstore.event;
 
 import com.github.eventasia.framework.Event;
+
 import java.io.Serializable;
 
 public class EventasiaMessage implements Serializable {

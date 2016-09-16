@@ -2,6 +2,6 @@ rootProject.name = 'eventasia'
 
 include ':eventasia-framework'
 include ':eventasia-starter'
-include ':eventasia-store:store-cassandra'
-include ':eventasia-stream:stream-kafka'
+include ':eventasia-store-cassandra'
+include ':eventasia-stream-kafka'
 

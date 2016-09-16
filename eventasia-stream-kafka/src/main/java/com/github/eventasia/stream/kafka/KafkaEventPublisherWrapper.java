@@ -1,6 +1,7 @@
 package com.github.eventasia.stream.kafka;
 
 import com.github.eventasia.eventstore.event.EventPublisher;
+import com.github.eventasia.eventstore.event.EventStoreListener;
 import com.github.eventasia.eventstore.event.EventasiaGsonMessageConverterImpl;
 import com.github.eventasia.eventstore.event.EventasiaMessage;
 import org.apache.commons.logging.Log;
@@ -34,7 +35,7 @@ public class KafkaEventPublisherWrapper implements EventPublisher{
         kafkaTemplate.send(kafkaTemplate.getDefaultTopic(), new String(messageConverter.serialize(eventMessage) ));
     }
 
-    @KafkaListener(topicPattern = "eventasia")
+    @KafkaListener(topicPattern = ".*eventasia")
     @Override
     public void receiveAndPropagateEvent(String eventMessage) {
         log.info("KafkaListener.receive: "+eventMessage);

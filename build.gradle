@@ -1,5 +1,5 @@
 group 'com.github.eventasia'
-version = "0.0.3.SNAPSHOT"
+version = "0.0.4.RELEASE"
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
@@ -159,11 +159,11 @@ subprojects {
 
     gradle.taskGraph.whenReady { taskGraph ->
         if (taskGraph.allTasks.any { it instanceof Sign }) {
-
+            def currentUser = System.getenv("USER")
             //Make secretKeyRingFile relative to the rootProject
             def secretKeyRingFile = new File("${project(':').projectDir}/${ext."signing.secretKeyRingFile"}")
             if(!secretKeyRingFile.exists()) {
-              secretKeyRingFile=new File("~/.gnupg/secring.gpg")
+              secretKeyRingFile=new File("/home/"+currentUser+"/.gnupg/secring.gpg")
             }
             allprojects {
                 ext."signing.secretKeyRingFile" = secretKeyRingFile

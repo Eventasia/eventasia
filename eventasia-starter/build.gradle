@@ -5,17 +5,16 @@ bootRepackage {
 }
 
 dependencies {
-    compile project(":event-store")
+
+    compile project(":eventasia-framework")
 
     compile("org.springframework.boot:spring-boot-starter")
     compile('org.springframework.kafka:spring-kafka:1.0.2.RELEASE')
 
-    compile group: 'org.apache.kafka', name: 'kafka-clients', version: '0.9.0.0'
+    compile("org.springframework:spring-aop")
+    compile("org.springframework:spring-aspects")
 
-
-//    compile group: 'org.apache.kafka', name: 'kafka-streams', version: '0.10.0.0'
-
-
+    compile("com.google.code.gson:gson:2.7")
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('junit:junit:4.12')

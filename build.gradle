@@ -1,5 +1,5 @@
 group 'com.github.eventasia'
-version = "0.0.7.SNAPSHOT"
+version = "0.0.7.RELEASE"
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 

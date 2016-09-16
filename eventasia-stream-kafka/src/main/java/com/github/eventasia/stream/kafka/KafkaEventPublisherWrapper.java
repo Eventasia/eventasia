@@ -34,8 +34,8 @@ public class KafkaEventPublisherWrapper implements EventPublisher{
         kafkaTemplate.send(kafkaTemplate.getDefaultTopic(), new String(messageConverter.serialize(eventMessage) ));
     }
 
+    @KafkaListener(topicPattern = "eventasia")
     @Override
-    @KafkaListener(topicPattern = "*")
     public void receiveAndPropagateEvent(String eventMessage) {
         log.info("KafkaListener.receive: "+eventMessage);
         EventasiaMessage eventasiaMessage = messageConverter.deserialize(eventMessage.getBytes());

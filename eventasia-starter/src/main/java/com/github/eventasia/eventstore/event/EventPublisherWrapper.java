@@ -1,5 +1,6 @@
 package com.github.eventasia.eventstore.event;
 
+import com.google.gson.JsonParseException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -27,7 +28,11 @@ public class EventPublisherWrapper implements EventPublisher{
 
     @Override
     public void receiveAndPropagateEvent(String eventMessage) {
-        EventasiaMessage eventasiaMessage = messageConverter.deserialize(eventMessage.getBytes());
-        publisher.publishEvent(eventasiaMessage.getEvent());
+        try {
+            EventasiaMessage eventasiaMessage = messageConverter.deserialize(eventMessage.getBytes());
+            publisher.publishEvent(eventasiaMessage.getEvent());
+        } catch (JsonParseException jsonParseException){
+            log.info("Unable to convert message. You probably does not have the Event used in this message");
+        }
     }
 }

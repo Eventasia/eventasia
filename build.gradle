@@ -32,7 +32,7 @@ if (System.getenv("SIGNING_KEY_PASSWORD") != null) {
 buildscript {
     ext {
         springBootVersion = '1.4.0.RELEASE'
-        kotlin_version = '1.0.4'
+        kotlin_version = '1.0.5-2'
     }
     repositories {
         maven { url = "https://plugins.gradle.org/m2/" }
@@ -43,6 +43,8 @@ buildscript {
 
         classpath('io.spring.gradle:dependency-management-plugin:0.5.4.RELEASE')
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
+
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M2'
     }
 }
 
@@ -62,6 +64,8 @@ subprojects {
     apply plugin: 'maven'
     apply plugin: 'signing'
 
+    apply plugin: 'org.junit.platform.gradle.plugin'
+
     group = rootProject.group
     version = rootProject.version
 
@@ -80,6 +84,13 @@ subprojects {
     }
 
     plugins.withType(JavaPlugin) {
+        junitPlatform {
+            engines {
+                include 'spek'
+                //include 'junit-jupiter'
+            }
+        }
+
         jar{
             version = project.version
         }

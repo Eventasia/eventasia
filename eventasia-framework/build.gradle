@@ -1,3 +1,6 @@
 dependencies {
-    testCompile('junit:junit:4.12')
+    compile('io.reactivex:rxkotlin:0.60.0')
+
+    testCompile 'org.jetbrains.spek:spek-api:1.0.89'
+    testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.0.89'
 }

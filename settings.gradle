@@ -1,4 +1,4 @@
 rootProject.name = 'eventasia'
 
-include ':eventasia-framework'
-
+include ':eventasia-api'
+include ':eventasia-store:eventasia-store-memory'

@@ -1,5 +1,5 @@
 group 'com.github.eventasia'
-version = "0.0.8.RELEASE"
+version = "0.0.9.RELEASE"
 
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
@@ -163,7 +163,7 @@ subprojects {
             //Make secretKeyRingFile relative to the rootProject
             def secretKeyRingFile = new File("${project(':').projectDir}/${ext."signing.secretKeyRingFile"}")
             if(!secretKeyRingFile.exists()) {
-              secretKeyRingFile=new File("/home/"+currentUser+"/.gnupg/secring.gpg")
+              secretKeyRingFile=new File("./secring.gpg")
             }
             allprojects {
                 ext."signing.secretKeyRingFile" = secretKeyRingFile

@@ -4,6 +4,7 @@ import com.github.eventasia.eventstore.event.EventPublisher;
 import com.github.eventasia.eventstore.event.EventStoreListener;
 import com.github.eventasia.eventstore.event.EventasiaGsonMessageConverterImpl;
 import com.github.eventasia.eventstore.event.EventasiaMessage;
+import com.google.gson.JsonParseException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,13 @@ public class KafkaEventPublisherWrapper implements EventPublisher{
     @KafkaListener(topicPattern = ".*eventasia")
     @Override
     public void receiveAndPropagateEvent(String eventMessage) {
-        log.info("KafkaListener.receive: "+eventMessage);
-        EventasiaMessage eventasiaMessage = messageConverter.deserialize(eventMessage.getBytes());
-        publisher.publishEvent(eventasiaMessage.getEvent());
-        log.debug("KafkaListener.propagate="+ eventasiaMessage.getEvent());
+        try {
+            log.info("KafkaListener.receive: "+eventMessage);
+            EventasiaMessage eventasiaMessage = messageConverter.deserialize(eventMessage.getBytes());
+            publisher.publishEvent(eventasiaMessage.getEvent());
+            log.debug("KafkaListener.propagate="+ eventasiaMessage.getEvent());
+        } catch (JsonParseException jsonParseException){
+            log.info("Unable to convert message. You probably does not have the Event used in this message");
+        }
     }
 }

@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.stereotype.Component;
 
+import java.io.UnsupportedEncodingException;
+
 @Component
 public class EventasiaGsonMessageConverterImpl implements EventasiaMessageConverter {
 
@@ -23,7 +25,12 @@ public class EventasiaGsonMessageConverterImpl implements EventasiaMessageConver
 
     public byte[] serialize(EventasiaMessage message) {
 
-        return gson.toJson(message, EventasiaMessage.class).getBytes();
+        try {
+            return gson.toJson(message, EventasiaMessage.class).getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public EventasiaMessage deserialize(byte[] message) {

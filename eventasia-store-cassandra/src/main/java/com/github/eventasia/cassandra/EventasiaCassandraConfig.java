@@ -1,9 +1,6 @@
 package com.github.eventasia.cassandra;
 
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Host;
-import com.datastax.driver.core.Metadata;
-import com.datastax.driver.core.Session;
+import com.datastax.driver.core.*;
 import com.datastax.driver.extras.codecs.enums.EnumNameCodec;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
@@ -44,6 +41,7 @@ public class EventasiaCassandraConfig {
         cluster = Cluster.builder()
                 .addContactPoint(getContactPoints())
                 .withPort(getPort())
+                .withPoolingOptions(new PoolingOptions())
                 .build();
         Metadata metadata = cluster.getMetadata();
         log.info("Connected to cluster: "+ metadata.getClusterName());

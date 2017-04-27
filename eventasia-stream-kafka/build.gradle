@@ -8,9 +8,7 @@ dependencies {
     compile project(":eventasia-starter")
 
     compile("org.springframework.boot:spring-boot-starter")
-    compile('org.springframework.kafka:spring-kafka:1.1.2.RELEASE')
-
-    compile group: 'org.apache.kafka', name: 'kafka-clients', version: '0.10.2.0'
+    compile('org.springframework.kafka:spring-kafka:1.2.0.RELEASE')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('junit:junit:4.12')

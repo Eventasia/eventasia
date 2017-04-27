@@ -31,6 +31,12 @@ public class EventasiaKafkaConfig {
     @Value("${eventasia.kafka.application-group}")
     private String applicationGroup;
 
+    @Value("${eventasia.kafka.retries-config}")
+    private Integer retries;
+
+    @Value("${eventasia.kafka.acks}")
+    private String acks;
+
     @Bean
     ConcurrentKafkaListenerContainerFactory<Integer, String>
     kafkaListenerContainerFactory() {
@@ -68,7 +74,8 @@ public class EventasiaKafkaConfig {
         //FIXME: 12factorize
         Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, getBrokerList());
-        props.put(ProducerConfig.RETRIES_CONFIG, 0);
+        props.put(ProducerConfig.RETRIES_CONFIG, retries);
+        props.put(ProducerConfig.ACKS_CONFIG, acks);
         //props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
         //props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
         //props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);

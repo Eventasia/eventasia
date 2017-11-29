@@ -35,7 +35,6 @@ public class EventasiaCassandraConfig {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-
     @PostConstruct
     public void connect() {
         cluster = Cluster.builder()

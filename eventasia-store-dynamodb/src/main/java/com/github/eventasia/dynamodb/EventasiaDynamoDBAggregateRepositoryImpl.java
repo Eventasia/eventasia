@@ -1,7 +1,6 @@
 package com.github.eventasia.dynamodb;
 
 import com.github.eventasia.framework.Aggregate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -10,10 +9,11 @@ import java.util.UUID;
 public class EventasiaDynamoDBAggregateRepositoryImpl<A extends Aggregate> implements EventasiaDynamoDBAggregateRepository<A> {
 
     private final EventasiaDynamoDBConfig config;
+    private final Class clazz;
 
-    @Autowired
-    public EventasiaDynamoDBAggregateRepositoryImpl(EventasiaDynamoDBConfig config) {
+    public EventasiaDynamoDBAggregateRepositoryImpl(EventasiaDynamoDBConfig config, Class clazz) {
         this.config = config;
+        this.clazz = clazz;
     }
 
     @Override
@@ -23,11 +23,6 @@ public class EventasiaDynamoDBAggregateRepositoryImpl<A extends Aggregate> imple
 
     @Override
     public A get(UUID uuid) {
-        throw new UnsupportedOperationException("use get(Class clazz, UUID id) instead.");
-    }
-
-    @Override
-    public A get(Class clazz, UUID id) {
-        return (A) config.getMapper().load(clazz, id);
+        return (A) config.getMapper().load(clazz, uuid);
     }
 }

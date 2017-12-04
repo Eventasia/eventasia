@@ -1,11 +1,9 @@
 package com.github.eventasia.dynamodb;
 
 import com.github.eventasia.framework.Aggregate;
-import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-@Component
 public class EventasiaDynamoDBAggregateRepositoryImpl<A extends Aggregate> implements EventasiaDynamoDBAggregateRepository<A> {
 
     private final EventasiaDynamoDBConfig config;
